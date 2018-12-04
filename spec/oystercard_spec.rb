@@ -30,11 +30,6 @@ describe Oystercard do
   context "touch in" do
     it { is_expected.to respond_to(:touch_in) }
 
-    it "sets in_journey to true" do
-      subject.top_up(2)
-      expect(subject.touch_in(:station)).to eq true
-    end
-
     it 'raises an error if balance is less than minimum fair' do
       expect { subject.touch_in(:station) }.to raise_error "Balance less than minimum fair"
     end
@@ -49,16 +44,18 @@ describe Oystercard do
   context "touch out" do
     it { is_expected.to respond_to(:touch_out) }
 
-    it "sets in_journey to false" do
-      subject.top_up(2)
-      subject.touch_in(:station)
-      expect(subject.touch_out).to eq false
-    end
-
     it "should deduct minimum fare from balance" do
       subject.top_up(2)
       subject.touch_in(:station)
       expect { subject.touch_out }.to change { subject.balance }.by(-1)
     end
+
+    it "should forget entry station" do
+      subject.top_up(2)
+      subject.touch_in(:station)
+      subject.touch_out
+      expect(subject.entry_station).to be_nil
+    end
+
   end
 end
