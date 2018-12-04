@@ -1,6 +1,9 @@
 require 'oystercard.rb'
 
 describe Oystercard do
+
+  let(:station) { double :station }
+
   it "Does oystercard respond to balance method" do
     expect(subject.balance).to eq 0
   end
@@ -29,12 +32,18 @@ describe Oystercard do
 
     it "sets in_journey to true" do
       subject.top_up(2)
-      expect(subject.touch_in).to eq true
+      expect(subject.touch_in(:station)).to eq true
     end
 
     it 'raises an error if balance is less than minimum fair' do
-      expect { subject.touch_in }.to raise_error "Balance less than minimum fair"
+      expect { subject.touch_in(:station) }.to raise_error "Balance less than minimum fair"
     end
+
+    it 'stores the entry station' do
+      subject.top_up(2)
+      subject.touch_in(:station)
+      expect(subject.entry_station).equal?(:station)
+    end  
   end
 
   context "touch out" do
@@ -42,13 +51,13 @@ describe Oystercard do
 
     it "sets in_journey to false" do
       subject.top_up(2)
-      subject.touch_in
+      subject.touch_in(:station)
       expect(subject.touch_out).to eq false
     end
 
     it "should deduct minimum fare from balance" do
       subject.top_up(2)
-      subject.touch_in
+      subject.touch_in(:station)
       expect { subject.touch_out }.to change { subject.balance }.by(-1)
     end
   end
