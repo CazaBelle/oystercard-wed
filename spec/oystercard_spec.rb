@@ -24,12 +24,28 @@ describe Oystercard do
   end
 
   context "In Journey" do
-    it { is_expected.to respond_to(:in_journey?) }
+    it { is_expected.to respond_to(:in_journey) }
 
     it "checks if in use" do
-    expect(subject.in_journey?).equal? true
-      
+    expect(subject.in_journey).to eq false
+    end
+  end
 
+  context "touch in" do
+    it { is_expected.to respond_to(:touch_in) }
+
+    it "sets in_journey to true" do
+      expect(subject.touch_in).to eq true
+    end
+
+  end
+
+  context "touch out" do
+    it { is_expected.to respond_to(:touch_out) }
+
+    it "sets in_journey to false" do
+      subject.touch_in
+      expect(subject.touch_out).to eq false
     end
   end
 end
