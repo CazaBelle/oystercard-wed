@@ -35,15 +35,20 @@ describe Oystercard do
     it { is_expected.to respond_to(:touch_in) }
 
     it "sets in_journey to true" do
+      subject.top_up(2)
       expect(subject.touch_in).to eq true
     end
 
+    it 'raises an error if balance is less than minimum fair' do
+      expect { subject.touch_in }.to raise_error "Balance less than minimum fair"
+    end
   end
 
   context "touch out" do
     it { is_expected.to respond_to(:touch_out) }
 
     it "sets in_journey to false" do
+      subject.top_up(2)
       subject.touch_in
       expect(subject.touch_out).to eq false
     end
