@@ -16,4 +16,8 @@ MAX_BALANCE = 90
     @balance -= value
   end
 
+  def in_journey?
+    false
+  end
+
 end

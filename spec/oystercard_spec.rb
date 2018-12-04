@@ -6,8 +6,7 @@ describe Oystercard do
   end
 
   context "Top up" do
-    it { is_expected.to respond_to(:top_up).with(1).argument }
-
+    
     it "tops up card" do
       expect { subject.top_up(5) }.to change { subject.balance }.by(5)
     end
@@ -24,4 +23,13 @@ describe Oystercard do
     end
   end
 
+  context "In Journey" do
+    it { is_expected.to respond_to(:in_journey?) }
+
+    it "checks if in use" do
+    expect(subject.in_journey?).equal? true
+      
+
+    end
+  end
 end
