@@ -15,9 +15,6 @@ MIN_FAIR = 1
     @balance += value
   end
 
-  def deduct(value)
-    @balance -= value
-  end
 
   def touch_in
     raise "Balance less than minimum fair" if @balance < MIN_FAIR
@@ -25,7 +22,13 @@ MIN_FAIR = 1
   end
 
   def touch_out
+    deduct(MIN_FAIR)
     false
+  end
+
+  private
+  def deduct(value)
+    @balance -= value
   end
 
 end
