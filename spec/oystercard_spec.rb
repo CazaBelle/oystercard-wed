@@ -1,11 +1,11 @@
 require 'oystercard.rb'
 
 describe Oystercard do
-
+  
   let(:entry_station) { double :entry_station }
   let(:exit_station) { double :exit_station }
   let(:journey_hash) {double ({:entry_station => :exit_station})}
-
+  
   it "Does oystercard respond to balance method" do
     expect(subject.balance).to eq 0
   end
