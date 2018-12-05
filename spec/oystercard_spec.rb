@@ -21,13 +21,13 @@ describe Oystercard do
     end
   end
 
-  context "In Journey" do
-    it { is_expected.to respond_to(:in_journey) }
+  # context "In Journey" do
+  #   it { is_expected.to respond_to(:in_journey) }
 
-    it "checks if in use" do
-    expect(subject.in_journey).to eq false
-    end
-  end
+  #   it "checks if in use" do
+  #   expect(subject.in_journey).to eq false
+  #   end
+  # end
 
   context "touch in" do
 
@@ -40,6 +40,13 @@ describe Oystercard do
       subject.touch_in(:entry_station)
       expect(subject.entry_station).equal?(:entry_station)
     end  
+
+  #   it 'should create a new instance of the journey class' do
+  #     card = Oystercard.new
+  #     card.top_up(20)
+  #     journey = card.touch_in(:entry_station)
+  #     expect(journey).to eq journey
+  #   end
   end
 
   context "touch out" do
@@ -56,20 +63,21 @@ describe Oystercard do
     end
   end
 
-  context 'journey history' do
-    card = Oystercard.new
+  # context 'journey history' do
+  #   card = Oystercard.new
+  #   journey = Journey.new(:entry_station)
   
-    it 'should be empty on initialization' do
-      expect(card.journey).to be_empty
-    end
+  #   it 'should be empty on initialization' do
+  #     expect(journey.journey).to be_empty
+  #   end
 
-    it 'should store one journey' do
-      card.top_up(2)
-      card.touch_in(:entry_station)
-      card.touch_out(:exit_station)
-      expect(subject.journey).equal?(:journey_hash)
-    end
+  #   # it 'should store one journey' do
+  #   #   card.top_up(2)
+  #   #   card.touch_in(:entry_station)
+  #   #   card.touch_out(:exit_station)
+  #   #   expect(subject.journey).equal?(:journey_hash)
+  #   # end
 
-  end
+  # end
 
 end
