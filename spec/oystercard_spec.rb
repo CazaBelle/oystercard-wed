@@ -2,7 +2,8 @@ require 'oystercard.rb'
 
 describe Oystercard do
 
-  let(:station) { double :station }
+  let(:entry_station) { double :entry_station }
+  let(:exit_station) { double :exit_station }
 
   it "Does oystercard respond to balance method" do
     expect(subject.balance).to eq 0
@@ -30,29 +31,32 @@ describe Oystercard do
   context "touch in" do
 
     it 'raises an error if balance is less than minimum fare' do
-      expect { subject.touch_in(:station) }.to raise_error "Balance less than minimum fare"
+      expect { subject.touch_in(:entry_station) }.to raise_error "Balance less than minimum fare"
     end
 
     it 'stores the entry station' do
       subject.top_up(2)
-      subject.touch_in(:station)
-      expect(subject.entry_station).equal?(:station)
+      subject.touch_in(:entry_station)
+      expect(subject.entry_station).equal?(:entry_station)
     end  
   end
 
   context "touch out" do
     card = Oystercard.new
     card.top_up(2)
-    card.touch_in(:station)
+    card.touch_in(:entry_station)
 
     it "should deduct minimum fare from balance" do
-      expect { card.touch_out }.to change { card.balance }.by(-1)
+      expect { card.touch_out(:exit_station) }.to change { card.balance }.by(-1)
     end
 
     it "should forget entry station" do
-      card.touch_out
+      card.touch_out(:exit_station)
       expect(card.entry_station).to be_nil
     end
 
+    it 'should remember the exit station' do 
+      expect(card).to respond_to(:touch_out).with(1).argument
+    end
   end
 end
