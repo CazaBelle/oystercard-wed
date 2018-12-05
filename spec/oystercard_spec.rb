@@ -4,6 +4,7 @@ describe Oystercard do
 
   let(:entry_station) { double :entry_station }
   let(:exit_station) { double :exit_station }
+  let(:journey_hash) {double ({:entry_station => :exit_station})}
 
   it "Does oystercard respond to balance method" do
     expect(subject.balance).to eq 0
@@ -50,13 +51,25 @@ describe Oystercard do
       expect { card.touch_out(:exit_station) }.to change { card.balance }.by(-1)
     end
 
-    it "should forget entry station" do
-      card.touch_out(:exit_station)
-      expect(card.entry_station).to be_nil
-    end
-
     it 'should remember the exit station' do 
       expect(card).to respond_to(:touch_out).with(1).argument
     end
   end
+
+  context 'journey history' do
+    card = Oystercard.new
+  
+    it 'should be empty on initialization' do
+      expect(card.journey).to be_empty
+    end
+
+    it 'should store one journey' do
+      card.top_up(2)
+      card.touch_in(:entry_station)
+      card.touch_out(:exit_station)
+      expect(subject.journey).equal?(:journey_hash)
+    end
+
+  end
+
 end
