@@ -28,10 +28,9 @@ describe Oystercard do
   end
 
   context "touch in" do
-    it { is_expected.to respond_to(:touch_in) }
 
-    it 'raises an error if balance is less than minimum fair' do
-      expect { subject.touch_in(:station) }.to raise_error "Balance less than minimum fair"
+    it 'raises an error if balance is less than minimum fare' do
+      expect { subject.touch_in(:station) }.to raise_error "Balance less than minimum fare"
     end
 
     it 'stores the entry station' do
@@ -42,19 +41,17 @@ describe Oystercard do
   end
 
   context "touch out" do
-    it { is_expected.to respond_to(:touch_out) }
+    card = Oystercard.new
+    card.top_up(2)
+    card.touch_in(:station)
 
     it "should deduct minimum fare from balance" do
-      subject.top_up(2)
-      subject.touch_in(:station)
-      expect { subject.touch_out }.to change { subject.balance }.by(-1)
+      expect { card.touch_out }.to change { card.balance }.by(-1)
     end
 
     it "should forget entry station" do
-      subject.top_up(2)
-      subject.touch_in(:station)
-      subject.touch_out
-      expect(subject.entry_station).to be_nil
+      card.touch_out
+      expect(card.entry_station).to be_nil
     end
 
   end
